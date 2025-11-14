@@ -55,9 +55,18 @@ class TestingPracticeUITests: XCTestCase {
         
         
         passwordField.tap()
-        passwordField.typeText("Бла@бла")
+        passwordField.typeText("Bla@bla")
         
         loginButton.tap()
+        
+        let welcomeText = app.staticTexts["welcomeText"]
+        
+        var exists = welcomeText.waitForExistence(timeout: 5)
+        XCTAssertFalse(exists, "После входа должен появиться приветственный текст")
+        
+        if exists {
+            XCTAssertEqual(welcomeText.label, "Добро пожаловать!")
+        }
         
         // Очистка поля
         emailField.clearText()
@@ -70,6 +79,15 @@ class TestingPracticeUITests: XCTestCase {
         passwordField.typeText("-@!")
         
         loginButton.tap()
+        
+        // Ждем появления текста (максимум 5 секунд)
+        exists = welcomeText.waitForExistence(timeout: 5)
+        XCTAssertFalse(exists, "После входа должен появиться приветственный текст")
+        
+        // Дополнительная проверка
+        if exists {
+            XCTAssertEqual(welcomeText.label, "Добро пожаловать!")
+        }
         
     }
 }
